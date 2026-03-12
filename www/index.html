@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jenis Jenis - Anime</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600&display=swap');
+
+        :root {
+            --black: #0a0a0a;
+            --orange: #ff6600;
+            --white: #ffffff;
+            --gray: #1a1a1a;
+            --darkgray: #121212;
+            --softgreen: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* HEADER GLOBAL */
+        .main-header {
+            background: linear-gradient(to right, var(--darkgray), var(--black));
+            padding: 20px 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.25);
+            border-bottom: 4px solid var(--orange);
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: var(--orange);
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255,102,0,0.6);
+        }
+
+        /* HOME SCREEN */
+        #home-screen {
+            padding: 40px 20px;
+            text-align: center;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .option-card {
+            background: var(--gray);
+            width: 85%;
+            max-width: 380px;
+            padding: 35px 25px;
+            border-radius: 20px;
+            border: 3px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            cursor: pointer;
+        }
+
+        .option-card:hover {
+            transform: scale(1.08);
+            border-color: var(--orange);
+            box-shadow: 0 0 40px rgba(255,102,0,0.5);
+        }
+
+        .option-card.anime {
+            border-top: 8px solid var(--orange);
+        }
+
+        .option-card h2 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            color: var(--white);
+        }
+
+        .option-card p {
+            color: #bbb;
+            font-size: 1.1rem;
+        }
+
+        .coming-soon {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* LIST SCREEN */
+        #list-screen {
+            display: none;
+            padding: 20px;
+        }
+
+        .list-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--gray);
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        .list-header h1 {
+            font-size: 2rem;
+            color: var(--orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hamburger {
+            font-size: 2rem;
+            color: var(--white);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 12px;
+            transition: 0.3s;
+        }
+
+        .hamburger:hover {
+            color: var(--orange);
+        }
+
+        /* MENU DROPDOWN */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10,10,10,0.95);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-content {
+            background: var(--gray);
+            width: 85%;
+            max-width: 320px;
+            border-radius: 20px;
+            padding: 30px 20px;
+            border: 3px solid var(--orange);
+            text-align: center;
+        }
+
+        .menu-btn {
+            width: 100%;
+            background: transparent;
+            border: 2px solid var(--orange);
+            color: var(--white);
+            padding: 16px;
+            margin: 12px 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .menu-btn:hover {
+            background: var(--orange);
+            color: var(--black);
+        }
+
+        /* ANIME GRID - TANPA GAMBAR */
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+            gap: 18px;
+        }
+
+        .anime-card {
+            background: var(--gray);
+            border-radius: 18px;
+            padding: 22px 18px;
+            text-align: center;
+            transition: all 0.35s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .anime-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 35px rgba(255,102,0,0.4);
+        }
+
+        .anime-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--white);
+        }
+
+        .anime-genre {
+            background: var(--orange);
+            color: var(--black);
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 30px;
+            display: inline-block;
+            box-shadow: 0 3px 8px rgba(255,102,0,0.3);
+        }
+
+        .watched-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--softgreen);
+            color: #000;
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        /* MODAL DETAIL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.96);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--gray);
+            width: 100%;
+            max-width: 520px;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(255,102,0,0.6);
+        }
+
+        .modal-header {
+            background: var(--orange);
+            color: var(--black);
+            padding: 18px;
+            text-align: center;
+            font-size: 1.65rem;
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 30px 25px;
+        }
+
+        .modal-info {
+            margin-bottom: 18px;
+        }
+
+        .modal-genre {
+            display: inline-block;
+            background: var(--orange);
+            color: var(--black);
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .modal-year {
+            color: #aaa;
+            font-size: 1rem;
+            margin-top: 8px;
+        }
+
+        .modal-desc {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #ddd;
+            text-align: justify;
+        }
+
+        /* TOMBOL SUDAH DI TONTON */
+        .watch-btn {
+            background: var(--orange);
+            color: var(--black);
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .watch-btn.watched {
+            background: var(--softgreen);
+            color: #000;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 2.8rem;
+            color: var(--orange);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* GENRE MODAL */
+        #genre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            max-height: 420px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .genre-btn {
+            background: var(--gray);
+            border: 2px solid var(--orange);
+            color: var(--white);
+            padding: 14px 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .genre-btn:hover {
+            background: var(--orange);
+            color: var(--black);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #555;
+            font-size: 0.85rem;
+            border-top: 2px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HOME SCREEN -->
+    <div id="home-screen">
+        <div class="main-header">
+            <div class="title">JENIS JENIS</div>
+        </div>
+
+        <div class="option-card anime" onclick="goToList()">
+            <h2>ANIME</h2>
+            <p>200+ judul siap ditonton</p>
+        </div>
+
+        <div class="option-card coming-soon">
+            <h2>DONGHUA</h2>
+            <p style="color:#666;">Coming Soon 2026</p>
+        </div>
+    </div>
+
+    <!-- LIST SCREEN -->
+    <div id="list-screen">
+        <div class="list-header">
+            <h1 id="list-title">LIST ANIME</h1>
+            <button class="hamburger" onclick="toggleMenu()">☰</button>
+        </div>
+
+        <div class="anime-grid" id="anime-grid"></div>
+    </div>
+
+    <!-- MENU OVERLAY -->
+    <div class="menu-overlay" id="menu-overlay">
+        <div class="menu-content">
+            <button class="menu-btn" onclick="goHome()">🏠 HOME</button>
+            <button class="menu-btn" onclick="showGenreModal(); toggleMenu();">📂 GENRE</button>
+            <button class="menu-btn" onclick="toggleMenu()" style="border-color:#555; color:#888;">❌ TUTUP</button>
+        </div>
+    </div>
+
+    <!-- MODAL DETAIL ANIME -->
+    <div class="modal" id="detail-modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            
+            <div class="modal-header" id="modal-title">Judul Anime</div>
+            
+            <div class="modal-body">
+                <div class="modal-info">
+                    <span class="modal-genre" id="modal-genre"></span>
+                    <div class="modal-year" id="modal-year"></div>
+                </div>
+                <p class="modal-desc" id="modal-desc"></p>
+                
+                <!-- TOMBOL SUDAH DI TONTON -->
+                <div id="watch-section"></div>
+            </div>
+            
+            <div style="padding:25px; background:#111; text-align:center;">
+                <button onclick="closeModal()" 
+                        style="background:var(--orange); color:var(--black); padding:14px 50px; border:none; border-radius:50px; font-weight:700; font-size:1.1rem;">
+                    TUTUP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GENRE (POP UP) -->
+    <div class="modal" id="genre-modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGenreModal()">×</button>
+            
+            <div class="modal-header">Pilih Genre</div>
+            
+            <div class="modal-body">
+                <div id="genre-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 • ZArchiver Anime Collection • Hitam • Oren • Putih • Abu-abu
+    </footer>
+
+    <script>
+        // ==================== DATA 10 ANIME ====================
+        const animeList = [
+            { title: "Jujutsu Kaisen", genre: "Action", year: "2020", desc: "Yuji Itadori adalah siswa SMA biasa yang menelan jari kutukan milik Raja Kutukan Ryomen Sukuna. Ia terlibat dalam dunia penyihir jujutsu dan bergabung dengan Tokyo Jujutsu High untuk mengendalikan kekuatan tersebut." },
+            { title: "Demon Slayer", genre: "Action", year: "2019", desc: "Tanjiro Kamado, seorang anak yang baik hati, bergabung dengan Demon Slayer Corps setelah keluarganya dibantai iblis dan adiknya Nezuko berubah menjadi iblis." },
+            { title: "One Piece", genre: "Adventure", year: "1999", desc: "Monkey D. Luffy dan kru Topi Jerami berlayar melintasi Grand Line untuk menemukan harta karun legendaris 'One Piece' dan menjadi Raja Bajak Laut." },
+            { title: "Attack on Titan", genre: "Action", year: "2013", desc: "Setelah kampung halamannya dihancurkan dan ibunya dibunuh oleh Titan raksasa, Eren Yeager bersumpah akan memusnahkan semua Titan." },
+            { title: "My Hero Academia", genre: "Action", year: "2016", desc: "Di dunia di mana hampir semua orang memiliki kekuatan super (Quirk), Izuku Midoriya bermimpi menjadi pahlawan meskipun lahir tanpa Quirk." },
+            { title: "Fullmetal Alchemist: Brotherhood", genre: "Adventure", year: "2009", desc: "Edward dan Alphonse Elric menggunakan alkimia untuk mencari Philosopher's Stone demi mengembalikan tubuh mereka setelah eksperimen transmutasi manusia gagal." },
+            { title: "Steins;Gate", genre: "Sci-Fi", year: "2011", desc: "Rintaro Okabe, ilmuwan gila, menemukan cara mengirim pesan ke masa lalu yang akhirnya membawa pada konspirasi besar yang mengancam dunia." },
+            { title: "Spy × Family", genre: "Comedy", year: "2022", desc: "Seorang mata-mata, seorang pembunuh bayaran, dan seorang gadis kecil telepati membentuk keluarga palsu demi misi rahasia sambil menyembunyikan identitas asli mereka." },
+            { title: "Solo Leveling", genre: "Action", year: "2024", desc: "Sung Jin-Woo, hunter terlemah di dunia, mendapatkan sistem misterius yang memungkinkannya naik level dan menjadi pemburu terkuat di dunia gerbang dan monster." },
+            { title: "Re:Zero − Starting Life in Another World", genre: "Fantasy", year: "2016", desc: "Subaru Natsuki dipanggil ke dunia fantasi dan menemukan bahwa ia memiliki kemampuan 'Return by Death' — kembali ke titik waktu sebelumnya setiap kali ia mati." }
+        ];
+
+        // ==================== GENRE LIST ====================
+        const allGenres = [
+            "Action", "Sci-Fi", "Isekai", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Psychological",
+            "Romance", "Slice of Life", "Supernatural", "Suspense", "Thriller", "Mecha", "Sports", "Gourmet", "Historical",
+            "Military", "Music", "Parody", "Police", "Post-Apocalyptic", "School", "Space", "Super Power", "Vampire",
+            "Cyberpunk", "Steampunk", "Harem", "Reverse Harem", "Ecchi", "Shonen", "Shojo", "Seinen", "Josei",
+            "Kodomomuke", "Boys Love", "Girls Love", "Martial Arts", "Magic", "Mythology", "Samurai", "Strategy",
+            "Work Life", "Survival"
+        ];
+
+        let watched = [];
+        let currentFilter = null;
+
+        function loadWatched() {
+            const saved = localStorage.getItem('watchedAnime');
+            if (saved) watched = JSON.parse(saved);
+        }
+
+        function saveWatched() {
+            localStorage.setItem('watchedAnime', JSON.stringify(watched));
+        }
+
+        function toggleWatch(title) {
+            if (watched.includes(title)) {
+                watched = watched.filter(t => t !== title);
+            } else {
+                watched.push(title);
+            }
+            saveWatched();
+            updateWatchButton(title);
+            renderAnime();
+        }
+
+        function updateWatchButton(title) {
+            const section = document.getElementById('watch-section');
+            const isWatched = watched.includes(title);
+            section.innerHTML = `
+                <button onclick="toggleWatch('${title}')" 
+                        class="watch-btn ${isWatched ? 'watched' : ''}">
+                    ${isWatched ? '✓ SUDAH DITONTON' : 'TANDAI SUDAH DITONTON'}
+                </button>
+            `;
+        }
+
+        function renderAnime() {
+            const grid = document.getElementById('anime-grid');
+            grid.innerHTML = '';
+
+            let filteredList = animeList;
+            if (currentFilter) {
+                filteredList = animeList.filter(a => a.genre === currentFilter);
+            }
+
+            document.getElementById('list-title').textContent = currentFilter 
+                ? `LIST ANIME - ${currentFilter}` 
+                : 'LIST ANIME';
+
+            filteredList.forEach(anime => {
+                const isWatched = watched.includes(anime.title);
+                const card = document.createElement('div');
+                card.className = 'anime-card';
+                card.innerHTML = `
+                    <div class="anime-title">${anime.title}</div>
+                    <div class="anime-genre">${anime.genre}</div>
+                    ${isWatched ? `<span class="watched-badge">✓ DITONTON</span>` : ''}
+                `;
+                card.onclick = () => showDetail(anime);
+                grid.appendChild(card);
+            });
+        }
+
+        function showDetail(anime) {
+            document.getElementById('modal-title').textContent = anime.title;
+            document.getElementById('modal-genre').textContent = anime.genre;
+            document.getElementById('modal-year').innerHTML = `📅 Tahun: ${anime.year}`;
+            document.getElementById('modal-desc').textContent = anime.desc;
+            updateWatchButton(anime.title);
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').style.display = 'none';
+        }
+
+        function showGenreModal() {
+            const modal = document.getElementById('genre-modal');
+            const grid = document.getElementById('genre-grid');
+            grid.innerHTML = '';
+
+            const allBtn = document.createElement('button');
+            allBtn.className = 'genre-btn';
+            allBtn.textContent = 'Semua';
+            allBtn.onclick = () => { currentFilter = null; renderAnime(); closeGenreModal(); };
+            grid.appendChild(allBtn);
+
+            allGenres.forEach(genre => {
+                const btn = document.createElement('button');
+                btn.className = 'genre-btn';
+                btn.textContent = genre;
+                btn.onclick = () => { currentFilter = genre; renderAnime(); closeGenreModal(); };
+                grid.appendChild(btn);
+            });
+
+            modal.style.display = 'flex';
+        }
+
+        function closeGenreModal() {
+            document.getElementById('genre-modal').style.display = 'none';
+        }
+
+        function goToList() {
+            document.getElementById('home-screen').style.display = 'none';
+            document.getElementById('list-screen').style.display = 'block';
+        }
+
+        function goHome() {
+            document.getElementById('list-screen').style.display = 'none';
+            document.getElementById('home-screen').style.display = 'flex';
+            currentFilter = null;
+            renderAnime();
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu-overlay');
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        window.onload = function() {
+            loadWatched();
+            renderAnime();
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "Escape") {
+                    const detail = document.getElementById('detail-modal');
+                    const genreModal = document.getElementById('genre-modal');
+                    const menu = document.getElementById('menu-overlay');
+                    
+                    if (detail.style.display === 'flex') closeModal();
+                    else if (genreModal.style.display === 'flex') closeGenreModal();
+                    else if (menu.style.display === 'flex') toggleMenu();
+                }
+            });
+        };
+    </script>
+</body>
+</html>
